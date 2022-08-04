@@ -1,8 +1,18 @@
 package de.softpharm.api.repositories
 
 import de.softpharm.api.data.Drug
+import org.springframework.stereotype.Repository
 
-class SimpleDrugRepository(private val drugs :List<Drug>): DrugRepository{
+@Repository
+class SimpleDrugRepository(private var drugs: List<Drug>) : DrugRepository {
+    override fun initialize() {
+        this.drugs = listOf(
+            Drug("Sertraline", "SSRI", listOf("Depression", "Angststörung")),
+            Drug("Alprazolam", "Benzodiazepine", listOf("Angststörung", "Panikattacke")),
+            Drug("Ibuprofen", "NSAID", listOf("Schmerzen", "Fieber"))
+        )
+    }
+
     override fun getAllDrugs(): List<Drug> {
         return this.drugs
     }
@@ -12,10 +22,10 @@ class SimpleDrugRepository(private val drugs :List<Drug>): DrugRepository{
     }
 
     override fun getDrugByName(name: String): Drug? {
-        val allDrugsWithName = this.drugs.filter { drug:Drug -> drug.name == name }
-        if(allDrugsWithName.isEmpty()){
+        val allDrugsWithName = this.drugs.filter { drug: Drug -> drug.name == name }
+        if (allDrugsWithName.isEmpty()) {
             return null
-        }else{
+        } else {
             return allDrugsWithName.first()
         }
     }
